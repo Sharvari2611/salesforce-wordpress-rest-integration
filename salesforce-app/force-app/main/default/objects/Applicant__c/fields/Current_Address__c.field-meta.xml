@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_Address__c</fullName>
+    <label>Current Address</label>
+    <type>TextArea</type>
+    <description>Where the applicant currently lives</description>
+</CustomField>

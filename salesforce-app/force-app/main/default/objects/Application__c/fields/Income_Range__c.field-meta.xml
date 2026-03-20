@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Income_Range__c</fullName>
+    <label>Income Range</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Under $20k</fullName>
+                <default>false</default>
+                <label>Under $20k</label>
+            </value>
+            <value>
+                <fullName>$20k-$40k</fullName>
+                <default>false</default>
+                <label>$20k - $40k</label>
+            </value>
+            <value>
+                <fullName>$40k-$60k</fullName>
+                <default>false</default>
+                <label>$40k - $60k</label>
+            </value>
+            <value>
+                <fullName>Over $60k</fullName>
+                <default>false</default>
+                <label>Over $60k</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

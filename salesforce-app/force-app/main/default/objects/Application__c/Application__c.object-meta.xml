@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Application</label>
+    <pluralLabel>Applications</pluralLabel>
+    <nameField>
+        <label>Application Name</label>
+        <type>AutoNumber</type>
+        <displayFormat>REF-{0000}</displayFormat>
+        <startingNumber>1</startingNumber>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <description>A housing application linking one Applicant to one Property. Junction object between Applicant__c and Property__c.</description>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+</CustomObject>

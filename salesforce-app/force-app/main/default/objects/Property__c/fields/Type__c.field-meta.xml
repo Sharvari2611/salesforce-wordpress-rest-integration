@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <label>Type</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Studio</fullName>
+                <default>false</default>
+                <label>Studio</label>
+            </value>
+            <value>
+                <fullName>1 Bedroom</fullName>
+                <default>false</default>
+                <label>1 Bedroom</label>
+            </value>
+            <value>
+                <fullName>2 Bedroom</fullName>
+                <default>false</default>
+                <label>2 Bedroom</label>
+            </value>
+            <value>
+                <fullName>3 Bedroom</fullName>
+                <default>false</default>
+                <label>3 Bedroom</label>
+            </value>
+            <value>
+                <fullName>Shared</fullName>
+                <default>false</default>
+                <label>Shared</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

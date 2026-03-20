@@ -1,0 +1,12 @@
+# Salesforce
+.sfdx/
+.sf/
+*.lock
+
+# Node
+node_modules/
+.env
+
+# OS
+.DS_Store
+Thumbs.db
