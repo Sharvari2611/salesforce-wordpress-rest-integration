@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Community Connect Foundation — Housing Application</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px;
+      color: #2d3748;
+    }
+
+    /* ── Header banner ────────────────────────────────────────────────────── */
+    .header {
+      width: 100%;
+      max-width: 680px;
+      background: #1a56a0;
+      border-radius: 12px 12px 0 0;
+      padding: 28px 32px;
+      color: white;
+    }
+    .header-logo {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: #93c5fd;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .header p {
+      font-size: 14px;
+      color: #bfdbfe;
+      line-height: 1.5;
+    }
+
+    /* ── Form card ────────────────────────────────────────────────────────── */
+    .card {
+      width: 100%;
+      max-width: 680px;
+      background: white;
+      border-radius: 0 0 12px 12px;
+      padding: 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    /* ── Section headings inside form ─────────────────────────────────────── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a56a0;
+      margin: 28px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .section-label:first-of-type { margin-top: 0; }
+
+    /* ── Form grid ────────────────────────────────────────────────────────── */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-row.single { grid-template-columns: 1fr; }
+
+    /* ── Field groups ─────────────────────────────────────────────────────── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+    }
+    label .required {
+      color: #dc2626;
+      margin-left: 2px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #111827;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #1a56a0;
+      box-shadow: 0 0 0 3px rgba(26, 86, 160, 0.12);
+    }
+    input.error, select.error, textarea.error {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+    .field-error {
+      font-size: 12px;
+      color: #dc2626;
+      display: none;
+    }
+    .field-error.show { display: block; }
+    textarea { resize: vertical; min-height: 80px; }
+    select { cursor: pointer; }
+
+    /* ── Submit button ────────────────────────────────────────────────────── */
+    .btn-wrap { margin-top: 28px; }
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      background: #1a56a0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    button[type="submit"]:hover:not(:disabled) { background: #1e429f; }
+    button[type="submit"]:active:not(:disabled) { transform: scale(0.99); }
+    button[type="submit"]:disabled {
+      background: #93c5fd;
+      cursor: not-allowed;
+    }
+
+    /* ── Spinner ──────────────────────────────────────────────────────────── */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Success state ────────────────────────────────────────────────────── */
+    .success-panel {
+      display: none;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: #dcfce7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+    }
+    .success-panel h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #166534;
+      margin-bottom: 8px;
+    }
+    .success-panel p {
+      font-size: 14px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+    .reference-badge {
+      display: inline-block;
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      color: #166534;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 8px;
+      margin: 12px 0 20px;
+      letter-spacing: 0.04em;
+    }
+    .btn-reset {
+      padding: 10px 24px;
+      background: transparent;
+      border: 1.5px solid #1a56a0;
+      color: #1a56a0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-reset:hover { background: #eff6ff; }
+
+    /* ── Error banner ─────────────────────────────────────────────────────── */
+    .error-banner {
+      display: none;
+      background: #fef2f2;
+      border: 1.5px solid #fca5a5;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #dc2626;
+      line-height: 1.5;
+    }
+    .error-banner.show { display: block; }
+
+    /* ── Footer note ──────────────────────────────────────────────────────── */
+    .footer-note {
+      font-size: 12px;
+      color: #9ca3af;
+      text-align: center;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    /* ── Responsive ───────────────────────────────────────────────────────── */
+    @media (max-width: 540px) {
+      .form-row { grid-template-columns: 1fr; }
+      .card { padding: 20px; }
+      .header { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <p class="header-logo">Community Connect Foundation</p>
+    <h1>Housing Application Form</h1>
+    <p>Complete this form to apply for available housing. We will review your application and contact you within 5 business days.</p>
+  </div>
+
+  <!-- Form card -->
+  <div class="card">
+
+    <!-- Success panel (hidden until submission succeeds) -->
+    <div class="success-panel" id="successPanel">
+      <div class="success-icon">✓</div>
+      <h2>Application Submitted!</h2>
+      <p>Thank you for applying. Your reference number is:</p>
+      <div class="reference-badge" id="refNumber">REF-0001</div>
+      <p>Please keep this reference number safe.<br>We will be in touch within 5 business days.</p>
+      <button class="btn-reset" onclick="resetForm()">Submit another application</button>
+    </div>
+
+    <!-- The actual form (hidden after success) -->
+    <form id="applicationForm" novalidate>
+
+      <!-- Personal details -->
+      <p class="section-label">Personal details</p>
+      <div class="form-row">
+        <div class="field">
+          <label for="firstName">First name <span class="required">*</span></label>
+          <input type="text" id="firstName" placeholder="Jane" required />
+          <span class="field-error" id="err-firstName">Please enter your first name</span>
+        </div>
+        <div class="field">
+          <label for="lastName">Last name <span class="required">*</span></label>
+          <input type="text" id="lastName" placeholder="Smith" required />
+          <span class="field-error" id="err-lastName">Please enter your last name</span>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:16px;">
+        <div class="field">
+          <label for="email">Email address <span class="required">*</span></label>
+          <input type="email" id="email" placeholder="jane@email.com" required />
+          <span class="field-error" id="err-email">Please enter a valid email address</span>
+        </div>
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" placeholder="0412 345 678" />
+        </div>
+      </div>
+
+      <div class="form-row single" style="margin-top:16px;">
+        <div class="field">
+          <label for="currentAddress">Current address</label>
+          <input type="text" id="currentAddress" placeholder="10 Example Street, Melbourne VIC 3000" />
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:16px;">
+        <div class="field">
+          <label for="gender">Gender</label>
+          <select id="gender">
+            <option value="">Select...</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Non-binary">Non-binary</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="employment">Employment status</label>
+          <select id="employment">
+            <option value="">Select...</option>
+            <option value="Employed">Employed</option>
+            <option value="Unemployed">Unemployed</option>
+            <option value="Self-employed">Self-employed</option>
+            <option value="Student">Student</option>
+            <option value="Retired">Retired</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Application details -->
+      <p class="section-label">Application details</p>
+
+      <div class="form-row single">
+        <div class="field">
+          <!--
+            WHY a dropdown for properties?
+            We fetch available properties from Salesforce via a separate
+            GET endpoint (or hardcode IDs for demo). This mirrors the real
+            nonprofit setup where applicants chose from available properties.
+            In this demo we hardcode — but the architecture is identical.
+          -->
+          <label for="propertyId">Preferred property <span class="required">*</span></label>
+          <select id="propertyId" required>
+            <option value="">Select a property...</option>
+            <!-- 
+              IMPORTANT: Replace these values with your actual Property__c record IDs
+              from your Salesforce org. Go to App Launcher > Properties > click a record
+              and copy the ID from the URL bar e.g. a02bm00000LcVzZAAV
+            -->
+            <option value="a02bm00000LcVzZAAV">Riverside House — 1 Bedroom, Southbank ($280/wk)</option>
+            <option value="a02bm00000LddLZAAZ">Central Lodge — Studio, CBD ($220/wk)</option>
+            <option value="a02bm00000LddNBAAZ">Parkview Flats — 2 Bedroom, Parklands ($350/wk)</option>
+            <option value="a02bm00000LddS1AAJ">Harmony Shared — Shared, Northside ($180/wk)</option>
+          </select>
+          <span class="field-error" id="err-propertyId">Please select a property</span>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:16px;">
+        <div class="field">
+          <label for="householdSize">Household size</label>
+          <select id="householdSize">
+            <option value="1">1 person</option>
+            <option value="2">2 people</option>
+            <option value="3">3 people</option>
+            <option value="4">4 people</option>
+            <option value="5">5+ people</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="incomeRange">Household income</label>
+          <select id="incomeRange">
+            <option value="">Select...</option>
+            <option value="Under $20k">Under $20,000</option>
+            <option value="$20k-$40k">$20,000 – $40,000</option>
+            <option value="$40k-$60k">$40,000 – $60,000</option>
+            <option value="Over $60k">Over $60,000</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row single" style="margin-top:16px;">
+        <div class="field">
+          <label for="specialRequirements">Special requirements</label>
+          <textarea id="specialRequirements" placeholder="Accessibility needs, pets, or anything else we should know..."></textarea>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="btn-wrap">
+        <button type="submit" id="submitBtn">
+          <div class="spinner" id="spinner"></div>
+          <span id="btnText">Submit Application</span>
+        </button>
+        <div class="error-banner" id="errorBanner">
+          Something went wrong submitting your application. Please try again or contact us directly.
+        </div>
+      </div>
+
+    </form>
+
+    <p class="footer-note">
+      Your information is stored securely in our Salesforce system and will only be used for housing assessment purposes.
+    </p>
+  </div>
+
+  <script>
+    // ── Configuration ───────────────────────────────────────────────────────
+    // This is the only URL the form knows about — the Node middleware
+    // The form never talks directly to Salesforce — that's the whole point
+    // Changing this to a production URL is the only change needed to go live
+    const NODE_ENDPOINT = 'http://localhost:3000/submit';
+
+    // ── Form validation ─────────────────────────────────────────────────────
+    // We validate before sending so we don't waste a network call on bad data
+    // Each required field gets a visual error state and an error message
+    function validateForm() {
+      let valid = true;
+
+      const requiredFields = [
+        { id: 'firstName',  errId: 'err-firstName' },
+        { id: 'lastName',   errId: 'err-lastName'  },
+        { id: 'email',      errId: 'err-email'     },
+        { id: 'propertyId', errId: 'err-propertyId'},
+      ];
+
+      requiredFields.forEach(({ id, errId }) => {
+        const input = document.getElementById(id);
+        const err   = document.getElementById(errId);
+        const empty = !input.value.trim();
+
+        // Email also needs format validation
+        const emailInvalid = id === 'email' && input.value &&
+          !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+
+        if (empty || emailInvalid) {
+          input.classList.add('error');
+          err.classList.add('show');
+          valid = false;
+        } else {
+          input.classList.remove('error');
+          err.classList.remove('show');
+        }
+      });
+
+      return valid;
+    }
+
+    // ── Loading state ───────────────────────────────────────────────────────
+    // Show a spinner and disable the button while the request is in flight
+    // This prevents double-submits and shows the user something is happening
+    function setLoading(loading) {
+      const btn     = document.getElementById('submitBtn');
+      const spinner = document.getElementById('spinner');
+      const btnText = document.getElementById('btnText');
+
+      btn.disabled          = loading;
+      spinner.style.display = loading ? 'block' : 'none';
+      btnText.textContent   = loading ? 'Submitting...' : 'Submit Application';
+    }
+
+    // ── Form submit handler ─────────────────────────────────────────────────
+    document.getElementById('applicationForm')
+      .addEventListener('submit', async function(e) {
+
+        // Prevent default browser form submission (page reload)
+        e.preventDefault();
+
+        // Hide any previous error banner
+        document.getElementById('errorBanner').classList.remove('show');
+
+        // Validate first — don't send if invalid
+        if (!validateForm()) return;
+
+        // Show loading state
+        setLoading(true);
+
+        // Build the JSON payload — must match what Apex expects
+        // Each key here maps to a field in ApplicationFormHandler.cls
+        const payload = {
+          firstName:           document.getElementById('firstName').value.trim(),
+          lastName:            document.getElementById('lastName').value.trim(),
+          email:               document.getElementById('email').value.trim(),
+          phone:               document.getElementById('phone').value.trim(),
+          currentAddress:      document.getElementById('currentAddress').value.trim(),
+          gender:              document.getElementById('gender').value,
+          employment:          document.getElementById('employment').value,
+          propertyId:          document.getElementById('propertyId').value,
+          householdSize:       parseInt(document.getElementById('householdSize').value),
+          incomeRange:         document.getElementById('incomeRange').value,
+          specialRequirements: document.getElementById('specialRequirements').value.trim(),
+        };
+
+        try {
+          // POST to Node middleware — NOT directly to Salesforce
+          // fetch() is the browser's built-in HTTP client
+          // We pass the payload as JSON in the request body
+          const response = await fetch(NODE_ENDPOINT, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload)
+          });
+
+          const result = await response.json();
+
+          if (result.status === 'success') {
+            // Update the reference number in the success panel
+            document.getElementById('refNumber').textContent =
+              result.reference || result.applicationId;
+
+            // Hide the form, show the success panel
+            document.getElementById('applicationForm').style.display = 'none';
+            document.getElementById('successPanel').style.display = 'block';
+
+          } else {
+            // Salesforce returned an error (e.g. duplicate email)
+            document.getElementById('errorBanner').classList.add('show');
+            setLoading(false);
+          }
+
+        } catch (error) {
+          // Network error — Node unreachable or timed out
+          console.error('Submission error:', error);
+          document.getElementById('errorBanner').classList.add('show');
+          setLoading(false);
+        }
+      });
+
+    // ── Remove error state on input ─────────────────────────────────────────
+    // As soon as the user starts typing in a field that had an error,
+    // clear the error — gives immediate positive feedback
+    ['firstName','lastName','email','propertyId'].forEach(id => {
+      document.getElementById(id).addEventListener('input', function() {
+        this.classList.remove('error');
+        const errEl = document.getElementById('err-' + id);
+        if (errEl) errEl.classList.remove('show');
+      });
+    });
+
+    // ── Reset form for another submission ───────────────────────────────────
+    function resetForm() {
+      document.getElementById('applicationForm').reset();
+      document.getElementById('applicationForm').style.display = 'block';
+      document.getElementById('successPanel').style.display = 'none';
+      document.getElementById('errorBanner').classList.remove('show');
+      setLoading(false);
+    }
+  </script>
+
+</body>
+</html>
