@@ -1,0 +1,23 @@
+{
+  "name": "salesforce-wordpress-rest-integration",
+  "version": "1.0.0",
+  "description": "A step-by-step demo showing how to connect an HTML form on WordPress to Salesforce via a Node.js middleware and Apex REST API",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.13.6",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  }
+}
