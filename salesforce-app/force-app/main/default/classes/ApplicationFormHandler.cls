@@ -34,6 +34,9 @@ global class ApplicationFormHandler {
             insert app;
 
             // ── 3. Return success ──────────────────────────────────────────
+            Application__c inserted = [
+            SELECT Name FROM Application__c WHERE Id = :app.Id
+            ];
             Map<String, String> result = new Map<String, String>();
             result.put('status',        'success');
             result.put('applicantId',   applicant.Id);
